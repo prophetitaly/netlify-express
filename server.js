@@ -5,7 +5,7 @@ const path = require('path');
 const dao = require("./dao");
 const { response } = require("express");
 
-const PORT = 3001;
+const port = process.env.PORT || 5000;
 
 const app = express();
 app.use(morgan("dev"));
@@ -165,6 +165,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}/`)
+app.listen(port, () =>
+  console.log(`Server running on http://localhost:${port}/`)
 );
