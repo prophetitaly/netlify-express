@@ -10,12 +10,10 @@ const PORT = 3001;
 const app = express();
 app.use(morgan("dev"));
 app.use(express.json()); // parse the body in JSON format => populate req.body attributes
-app.use(express.static("./build"));
+app.use(express.static(path.join(__dirname, '/build')));
 
 
 /*** APIs ***/
-
-app.get("/", (req, res)=>{res.redirect("/index.html")});
 
 // GET /api/tasks/
 app.get('/api/tasks/', async (req, res) => {
@@ -163,6 +161,9 @@ app.delete('/api/tasks/delete/:id', (req, res) => {
     .catch((error) => { res.status(501).json(error); });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}/`)
