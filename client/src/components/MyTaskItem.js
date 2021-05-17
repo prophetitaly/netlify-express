@@ -56,7 +56,7 @@ function MyTaskItem(props) {
 
         if (valid) {
             const task = {
-                id: props.task.id, description: description, date: date, important: important, private: isPrivate
+                id: props.task.id, description: description, date: date, important: important, private: isPrivate, completed: 1, user: 2
             };
 
             /*props.setTasks((oldTasks) => {
