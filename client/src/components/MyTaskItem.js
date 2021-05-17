@@ -36,37 +36,49 @@ function MyTaskItem(props) {
         if (description === "") {
             valid = false;
             setErrorMessageDescription((e) => {
-              return "Invalid description (should have a description)"
+                return "Invalid description (should have a description)"
             })
-          } else {
+        } else {
             if (props.tasks.some((t) => t.description === description && t.date.format("DD/MM/YYYY") === date.format("DD/MM/YYYY") && t.id !== props.task.id)) {
-              valid = false;
-              setErrorMessageDescription((e) => {
-                  return ("Invalid description (should not have the same description and date as other tasks)")
+                valid = false;
+                setErrorMessageDescription((e) => {
+                    return ("Invalid description (should not have the same description and date as other tasks)")
                 }
-              )
-              setErrorMessageDate((e) => {
-                  return ("Invalid date (should not have the same description and date as other tasks)")
+                )
+                setErrorMessageDate((e) => {
+                    return ("Invalid date (should not have the same description and date as other tasks)")
                 }
-              )
+                )
             }
-          }
+        }
 
-       
-        
+
+
         if (valid) {
             const task = {
                 id: props.task.id, description: description, date: date, important: important, private: isPrivate
             };
 
-            props.setTasks((oldTasks) => {
+            /*props.setTasks((oldTasks) => {
                 return oldTasks.map(ot => {
                     if (ot.id === task.id)
                         return task;
                     else
                         return ot;
                 });
-            });
+            });*/
+
+            fetch("/api/tasks/" + task.id,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(task),
+                })
+                .catch(function (error) {
+                    console.log("Failed to store data on server: ", error);
+                });
 
             setErrorMessageDescription(() => "");
             setErrorMessageDate(() => "");
@@ -102,7 +114,7 @@ function MyTaskItem(props) {
                                         color: "white",
                                         padding: "3px ",
                                         height: "24px"
-                                    }} onClick={(event)=>{event.preventDefault(); history.push(location.pathname.substr(0, location.pathname.lastIndexOf("/"))); }}>
+                                    }} onClick={(event) => { event.preventDefault(); history.push(location.pathname.substr(0, location.pathname.lastIndexOf("/"))); }}>
                                         <div className="d-flex w-100 justify-content-between align-items-center" style={{
                                             height: "16px", width: "16px"
                                         }}>
@@ -151,7 +163,7 @@ function MyTaskItem(props) {
                             </Col>
                             <div>
                                 <small>{props.task.date.format("DD MMM YYYY")}       </small>
-                                <Button as={Link} to={ !isNaN(location.pathname.substr(location.pathname.lastIndexOf("/")+1)) ? location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/" + props.task.id : location.pathname + "/" + props.task.id} id="modifyButton" style={{
+                                <Button as={Link} to={!isNaN(location.pathname.substr(location.pathname.lastIndexOf("/") + 1)) ? location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/" + props.task.id : location.pathname + "/" + props.task.id} id="modifyButton" style={{
                                     padding: "3px",
                                     height: "24px"
                                 }}>
