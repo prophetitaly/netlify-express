@@ -19,6 +19,7 @@ function MyContainer(props) {
   const [tasks, setTasks] = useState();
   const [modalShow, setModalShow] = useState(false);
   const [waiting, setWaiting] = useState(true);
+  const [reqUpdate, setReqUpdate] = useState(0);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -33,7 +34,7 @@ function MyContainer(props) {
     }
     setWaiting(true);
     fetchTasks();
-  }, [modalShow]);
+  }, [reqUpdate]);
 
 
   return (
@@ -47,32 +48,32 @@ function MyContainer(props) {
           <Switch>
             <Route path="/important" render={() => {
               return (
-                <MyTaskList tasks={tasks} setTasks={setTasks} filter={(t) => t.important} />
+                <MyTaskList setReqUpdate={setReqUpdate} tasks={tasks} setTasks={setTasks} filter={(t) => t.important} />
               );
             }} />
 
             <Route path="/today" render={() => {
               return (
-                <MyTaskList tasks={tasks} setTasks={setTasks} filter={(t) => (t.date.isSame(dayjs(), 'day'))} />
+                <MyTaskList setReqUpdate={setReqUpdate} tasks={tasks} setTasks={setTasks} filter={(t) => (t.date.isSame(dayjs(), 'day'))} />
               );
             }} />
 
             <Route path="/next7days" render={() => {
               return (
-                <MyTaskList tasks={tasks} setTasks={setTasks} filter={(t) =>
+                <MyTaskList setReqUpdate={setReqUpdate} tasks={tasks} setTasks={setTasks} filter={(t) =>
                   (t.date.isAfter(dayjs(), 'day') && t.date.isBefore(dayjs().add(7, 'day'), 'day'))} />
               );
             }} />
 
             <Route path="/private" render={() => {
               return (
-                <MyTaskList tasks={tasks} setTasks={setTasks} filter={(t) => t.private} />
+                <MyTaskList setReqUpdate={setReqUpdate} tasks={tasks} setTasks={setTasks} filter={(t) => t.private} />
               );
             }} />
 
             <Route path="/all" render={() => {
               return (
-                <MyTaskList tasks={tasks} setTasks={setTasks} filter={(t) => true} />
+                <MyTaskList setReqUpdate={setReqUpdate} tasks={tasks} setTasks={setTasks} filter={(t) => true} />
               );
             }} />
 
@@ -82,7 +83,8 @@ function MyContainer(props) {
       <Button variant="success" id="AddTask" onClick={() => setModalShow(true)}>
         <Plus width="40" height="50" />
       </Button>
-      {!waiting && <MyModalForm
+      {!waiting && <MyModalForm        
+        setReqUpdate={setReqUpdate}
         tasks={tasks}
         setTasks={setTasks}
         show={modalShow}
@@ -148,9 +150,11 @@ function MyModalForm(props) {
           },
           body: JSON.stringify(task),
         })
-        .catch(function(error){
+        .catch(function (error) {
           console.log("Failed to store data on server: ", error);
         });
+
+      props.setReqUpdate(r => r);
 
       resetForm();
       props.onHide();

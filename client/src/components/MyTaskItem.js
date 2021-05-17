@@ -80,6 +80,8 @@ function MyTaskItem(props) {
                     console.log("Failed to store data on server: ", error);
                 });
 
+            props.setReqUpdate(r => r);
+
             setErrorMessageDescription(() => "");
             setErrorMessageDate(() => "");
             history.push(location.pathname.substr(0, location.pathname.lastIndexOf("/")));
