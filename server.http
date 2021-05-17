@@ -1,0 +1,49 @@
+### Get all tasks
+GET http://localhost:3001/api/tasks
+
+### Get only important tasks
+GET http://localhost:3001/api/tasks?important=1
+
+### Get only private tasks
+GET http://localhost:3001/api/tasks?private=1
+
+### Get private tasks with date from 1st march 2020
+GET http://localhost:3001/api/tasks?private=1&from=2020-03-01
+
+### Get private & important tasks with date to 3rd march 2022
+GET http://localhost:3001/api/tasks?important=1&private=1&to=2022-03-03
+
+
+### Mark task as completed
+PUT  http://localhost:3001/api/tasks/completed
+Content-Type : application/json
+
+{ "id": 7,"completed": 0}
+
+### request for single task
+
+GET http://localhost:3001/api/tasks/2
+
+
+### update single task
+
+PUT http://localhost:3001/api/tasks/2
+Content-Type: application/json
+
+{"id": "2", "description": "Go for a walk", "important": "1", "private": "0", "date": "2021-04-14 21:00", "completed": "1", "user": "2"}
+
+
+### Delete a task
+DELETE  http://localhost:3001/api/tasks/delete/36
+
+### insert single task
+
+POST http://localhost:3001/api/tasks/
+Content-Type: application/json
+
+{"id": "", "description": "Go for a walk", "important": "1", "private": "0", "date": "2021-04-14 21:00", "completed": "1", "user": "2"}
+
+
+### request for single id
+
+GET http://localhost:3001/api/maxID
