@@ -10,7 +10,7 @@ const PORT = 3001;
 const app = express();
 app.use(morgan("dev"));
 app.use(express.json()); // parse the body in JSON format => populate req.body attributes
-app.use(express.static(path.join(__dirname, '/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 
 /*** APIs ***/
@@ -162,7 +162,7 @@ app.delete('/api/tasks/delete/:id', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/build/index.html'));
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 app.listen(PORT, () =>
