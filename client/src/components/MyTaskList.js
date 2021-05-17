@@ -8,7 +8,14 @@ function MyTaskList(props) {
   const location = useLocation();
 
   const deleteTask = (tId) => {
-    props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
+    //props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
+    fetch("/api/tasks/"+tId,
+        {
+          method: "DELETE"
+        })
+        .catch(function(error){
+          console.log("Failed to cancel task from server: ", error);
+        });
   }
 
   const filterAndMap = (t) => {

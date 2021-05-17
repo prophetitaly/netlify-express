@@ -150,7 +150,7 @@ function MyModalForm(props) {
         })
         .catch(function(error){
           console.log("Failed to store data on server: ", error);
-        })
+        });
 
       resetForm();
       props.onHide();
