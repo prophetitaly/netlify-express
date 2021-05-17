@@ -9,7 +9,7 @@ function MyTaskList(props) {
 
   const deleteTask = (tId) => {
     //props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
-    fetch("/api/tasks/"+tId,
+    fetch("/api/tasks/delete/"+tId,
         {
           method: "DELETE"
         })
