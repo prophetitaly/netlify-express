@@ -7,24 +7,26 @@ import { useLocation } from 'react-router';
 function MyTaskList(props) {
   const location = useLocation();
 
-  const deleteTask = (tId) => {
+  const deleteTask = async (tId) => {
     //props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
-    fetch("/api/tasks/delete/" + tId,
-      {
-        method: "DELETE"
-      })
-      .catch(function (error) {
-        console.log("Failed to cancel task from server: ", error);
-      });
+    try {
+      await fetch("/api/tasks/delete/" + tId,
+        {
+          method: "DELETE"
+        });
 
-    props.setReqUpdate(r => r);
+      await props.setReqUpdate(t => t + 1);
+    } catch (error) {
+      console.log("Failed to cancel task from server: ", error);
+    };
+
   }
 
   const filterAndMap = (t) => {
     if (props.filter(t)) {
       return (
         <MyTaskItem key={t.id}
-          setReqUpdate={setReqUpdate}
+          setReqUpdate={props.setReqUpdate}
           task={t}
           deleteTask={deleteTask}
           tasks={props.tasks}

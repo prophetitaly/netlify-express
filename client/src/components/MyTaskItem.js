@@ -19,7 +19,7 @@ function MyTaskItem(props) {
     const location = useLocation();
     const history = useHistory();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         let valid = true;
 
@@ -68,19 +68,21 @@ function MyTaskItem(props) {
                 });
             });*/
 
-            fetch("/api/tasks/" + task.id,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(task),
-                })
-                .catch(function (error) {
-                    console.log("Failed to store data on server: ", error);
-                });
 
-            props.setReqUpdate(r => r);
+            try {
+                await fetch("/api/tasks/" + task.id,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(task),
+                    });
+
+                await props.setReqUpdate(t => t + 1);
+            } catch (error) {
+                console.log("Failed to store data on server: ", error);
+            };
 
             setErrorMessageDescription(() => "");
             setErrorMessageDate(() => "");

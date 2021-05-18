@@ -34,6 +34,19 @@ function MyContainer(props) {
     }
     setWaiting(true);
     fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      const response = await fetch('/api/tasks/');
+      const fetchedTasks = await response.json();
+      fetchedTasks.forEach(e => {
+        e.date = dayjs(e.date);
+      });
+      await setTasks(fetchedTasks);
+      console.log(fetchedTasks);
+    }
+    fetchTasks();
   }, [reqUpdate]);
 
 
@@ -150,11 +163,12 @@ function MyModalForm(props) {
           },
           body: JSON.stringify(task),
         })
+        .then(props.setReqUpdate(t=>t+1))
         .catch(function (error) {
           console.log("Failed to store data on server: ", error);
         });
 
-      props.setReqUpdate(r => r);
+      
 
       resetForm();
       props.onHide();
