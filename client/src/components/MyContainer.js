@@ -96,7 +96,7 @@ function MyContainer(props) {
       <Button variant="success" id="AddTask" onClick={() => setModalShow(true)}>
         <Plus width="40" height="50" />
       </Button>
-      {!waiting && <MyModalForm        
+      {!waiting && <MyModalForm
         setReqUpdate={setReqUpdate}
         tasks={tasks}
         setTasks={setTasks}
@@ -115,7 +115,7 @@ function MyModalForm(props) {
   const [errorMessageDescription, setErrorMessageDescription] = useState("");
   const [errorMessageDate, setErrorMessageDate] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let valid = true;
 
@@ -150,25 +150,25 @@ function MyModalForm(props) {
 
     if (valid) {
       const task = {
-        description: description, date: date, important: important, private: isPrivate, completed: 0, user: 0
+        description: description, date: date.format('YYYY-MM-DD'), important: important, private: isPrivate, completed: 0, user: 0
       };
 
       //props.setTasks((oldTasks) => [...oldTasks, task]);
 
-      fetch("/api/tasks/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        })
-        .then(props.setReqUpdate(t=>t+1))
-        .catch(function (error) {
-          console.log("Failed to store data on server: ", error);
-        });
+      try {
+        await fetch("/api/tasks/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(task),
+          });
 
-      
+        await props.setReqUpdate(t => t + 1);
+      } catch (error) {
+        console.log("Failed to store data on server: ", error);
+      };
 
       resetForm();
       props.onHide();

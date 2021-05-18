@@ -27,10 +27,10 @@ GET http://localhost:3001/api/tasks/2
 
 ### update single task
 
-PUT http://localhost:3001/api/tasks/2
+PUT http://localhost:5000/api/tasks/4
 Content-Type: application/json
 
-{"id": "2", "description": "Go for a walk", "important": "1", "private": "0", "date": "2021-04-14 21:00", "completed": "1", "user": "2"}
+{"id": "4", "description": "Go for a walk", "important": "1", "private": "0", "date": "2021-04-14 21:00", "completed": "1", "user": "2"}
 
 
 ### Delete a task

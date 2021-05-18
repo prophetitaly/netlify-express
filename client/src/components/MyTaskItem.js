@@ -56,7 +56,7 @@ function MyTaskItem(props) {
 
         if (valid) {
             const task = {
-                id: props.task.id, description: description, date: date, important: important, private: isPrivate, completed: 1, user: 2
+                id: props.task.id, description: description, date: date.format('YYYY-MM-DD'), important: important, private: isPrivate, completed: 0, user: 0
             };
 
             /*props.setTasks((oldTasks) => {
@@ -70,7 +70,7 @@ function MyTaskItem(props) {
 
 
             try {
-                await fetch("/api/tasks/" + task.id,
+                await fetch("/api/tasks/" + props.task.id,
                     {
                         method: "PUT",
                         headers: {

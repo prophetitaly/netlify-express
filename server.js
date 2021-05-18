@@ -52,8 +52,8 @@ app.put('/api/tasks/:id', [
   const task = req.body;
 
   // id passed in the URL matches with the id in req.body
-  if (req.params.id !== task.id) {
-    res.status(503).json({ error: `URL id different from body id ${req.params.id}.` });
+  if (req.params.id != task.id) {
+    res.status(504).json({ error: `URL id different from body id ${req.params.id}.` });
     return;
   }
 
