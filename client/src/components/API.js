@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-const URL = "http://localhost:3000"
+const URL = ""
 
 async function loadTasks() {
     const response = await fetch(URL + '/api/tasks/');
