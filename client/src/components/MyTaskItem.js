@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { Link, Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import API from './API';
 
 
 function MyTaskItem(props) {
@@ -56,33 +57,25 @@ function MyTaskItem(props) {
 
         if (valid) {
             const task = {
-                id: props.task.id, description: description, date: date.format('YYYY-MM-DD'), important: important, private: isPrivate, completed: 0, user: 0
+                id: props.task.id, description: description, date: date.format('YYYY-MM-DD')
             };
 
-            /*props.setTasks((oldTasks) => {
+            props.setTasks((oldTasks) => {
                 return oldTasks.map(ot => {
                     if (ot.id === task.id)
                         return task;
                     else
                         return ot;
                 });
-            });*/
+            });
 
-
-            try {
-                await fetch("/api/tasks/" + props.task.id,
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(task),
-                    });
-
-                await props.setReqUpdate(t => t + 1);
-            } catch (error) {
-                console.log("Failed to store data on server: ", error);
-            };
+           API.addTask(task).then((err)=>{
+               if(err !== null){
+                console.log(err);
+               }else{
+                   props.setReqUpdate(true);
+               }
+           });
 
             setErrorMessageDescription(() => "");
             setErrorMessageDate(() => "");

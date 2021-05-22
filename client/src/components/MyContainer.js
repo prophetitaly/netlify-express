@@ -12,43 +12,28 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form"
 import { CheckSquare } from 'react-bootstrap-icons';
 import { Switch, Route } from 'react-router-dom';
+import API from "./API";
 
 
 function MyContainer(props) {
 
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [waiting, setWaiting] = useState(true);
-  const [reqUpdate, setReqUpdate] = useState(0);
+  const [reqUpdate, setReqUpdate] = useState(true);
 
   useEffect(() => {
-    async function fetchTasks() {
-      const response = await fetch('/api/tasks/');
-      const fetchedTasks = await response.json();
-      fetchedTasks.forEach(e => {
-        e.date = dayjs(e.date);
+    if (reqUpdate) {
+      API.loadTasks().then((t) => {
+        if (t.err === undefined) {
+          setTasks(t);
+          console.log(t);
+          setWaiting(false);
+          setReqUpdate(false);
+        }
       });
-      setTasks(fetchedTasks);
-      console.log(fetchedTasks);
-      setWaiting(false);
     }
-    setWaiting(true);
-    fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    async function fetchTasks() {
-      const response = await fetch('/api/tasks/');
-      const fetchedTasks = await response.json();
-      fetchedTasks.forEach(e => {
-        e.date = dayjs(e.date);
-      });
-      await setTasks(fetchedTasks);
-      console.log(fetchedTasks);
-    }
-    fetchTasks();
   }, [reqUpdate]);
-
 
   return (
     <Container fluid>

@@ -2,23 +2,23 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React from 'react';
 import MyTaskItem from './MyTaskItem';
 import { useLocation } from 'react-router';
+import API from './API';
 
 
 function MyTaskList(props) {
   const location = useLocation();
 
   const deleteTask = async (tId) => {
-    //props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
-    try {
-      await fetch("/api/tasks/delete/" + tId,
-        {
-          method: "DELETE"
-        });
 
-      await props.setReqUpdate(t => t + 1);
-    } catch (error) {
-      console.log("Failed to cancel task from server: ", error);
-    };
+    props.setTasks((oldTasks) => oldTasks.filter(t => t.id !== tId));
+
+    API.deleteTask(tId).then((err) => {
+      if (err !== null) {
+        console.log(err);
+      }else{
+        props.setReqUpdate(true);
+      }
+    });
 
   }
 
